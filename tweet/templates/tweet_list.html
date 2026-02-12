@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Chai aur Tweet
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Heading -->
+    <h1 class="display-4 fw-bold text-center mb-4">
+        Welcome to Chai's Django Project ☕
+    </h1>
+
+    <!-- Create Button (LEFT SIDE just above cards) -->
+    <a href="{% url 'tweet_create' %}" class="btn btn-primary mb-4">
+        Create a tweet
+    </a>
+
+    <!-- Tweets Section -->
+    <div class="row">
+        {% for tweet in tweets %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <img src="{{ tweet.photo.url }}" class="card-img-top" alt="Tweet Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tweet.user.username }}</h5>
+                    <p class="card-text">{{ tweet.text }}</p>
+                {% if tweet.user == request.user %}            
+                    <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No tweets available. Create one now!</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
